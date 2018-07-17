@@ -23,3 +23,30 @@ September 2016.".
 如果键不存在于字典内，将此键加入字典，并将它的值设为给定值。
 """
 
+caller_time = {}
+receiver_time = {}
+
+def get_time(log,index):
+    number = log[index]
+    if number not in caller_time:
+        caller_time[number] = int(log[3])
+    else:
+        caller_time[number] += int(log[3])
+
+for log in calls:
+    get_time(log, 0)
+    get_time(log, 1)
+
+for number, time in receiver_time.items():
+    if number in caller_time.keys():
+        caller_time[number] += time
+    else:
+        caller_time[number] = time
+
+total_time = max(caller_time.values())
+
+for number, time in caller_time.items():
+    if caller_time[number] == total_time:
+        telephone_number = number
+
+print ("{} spent the longest time, {} seconds, on the phone during September 2016.".format(telephone_number, total_time))

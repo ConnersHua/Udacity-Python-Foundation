@@ -39,3 +39,35 @@ with open('calls.csv', 'r') as f:
 to other fixed lines in Bangalore."
 注意：百分比应包含2位小数。
 """
+
+# 第一部分
+
+area_code = []
+
+for call in calls:
+    num_from=call[0]
+    num_to=call[1]
+    if num_from[0:5]=="(080)":
+        if num_to[0:2]=="(0" and num_to[1:str(num_to).find(")")] not in area_code:
+            area_code.append( num_to[1:str(num_to).find(")")] )
+        elif num_to[0] in ["7","8","9"] and str(num_to).find(" ") != -1 and num_to[0:4] not in area_code:
+            area_code.append(num_to[0:4])
+
+result = '\n'.join(filter_code for filter_code in sorted(area_code))
+
+print("The numbers called by people in Bangalore have codes: \n" + result )
+
+# 第二部分
+
+def percent_final():
+    callers = 0
+    receivers = 0
+    for c in calls:
+        if c[0][:5] == '(080)':
+            callers += 1
+        if c[0][:5] == '(080)' and c[1][:5] == '(080)':
+            receivers += 1
+    percent = round((receivers/callers*100), 2) #round down to 2 decimal digits
+    return str(percent)
+
+print(percent_final() + " percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.")
